@@ -39,6 +39,7 @@ unsigned int extraCycles;
 
 uint64_t cyclesNow = 0;
 bool doIrq = false;
+uint64_t speed_multiply = 1;
 
 uint64_t cycles(void)
 {
@@ -61,6 +62,8 @@ void *emulatorInitEmulation(void)
 	qlayInitialiseQsound();
 	traceInit();
 
+	speed_multiply = emulatorOptionInt("speed");
+
 	emulator_state_t *emu_state = calloc(1, sizeof(emulator_state_t));
 	return emu_state;
 }
@@ -70,7 +73,7 @@ bool emulatorInteration(void *state)
 	emulator_state_t *emu_state = (emulator_state_t *)state;
 
 	while ((emu_state->cyclesNow - emu_state->cyclesThen) <
-	       FIFTYHZ_CYCLES) {
+	       (FIFTYHZ_CYCLES * speed_multiply)) {
 		extraCycles = 0;
 		emu_state->cyclesNow += m68k_execute(1) + extraCycles;
 
@@ -89,7 +92,7 @@ bool emulatorInteration(void *state)
 
 	m68k_set_irq(2);
 
-	emu_state->cyclesThen += FIFTYHZ_CYCLES;
+	emu_state->cyclesThen += (FIFTYHZ_CYCLES * speed_multiply);
 
 	// update the RTC register
 	emu_state->frameCount++;

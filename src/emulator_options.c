@@ -160,6 +160,8 @@ struct emuOpts emuOptions[] = {
 	  NULL },
 	{ "trace-map", "", "map file for trace addrs to symbols", EMU_OPT_CHAR,
 	  0, NULL, NULL },
+	{ "speed", "", "speed in factor of BBQL speed",
+	  EMU_OPT_INT, 1, NULL, NULL },
 	{ "turboload", "", "run emulator at max speed while MDV motor on",
 	  EMU_OPT_INT, 0, NULL, NULL },
 #endif //QLAY_EMU
