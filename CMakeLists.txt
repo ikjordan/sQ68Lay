@@ -96,9 +96,11 @@ target_compile_options(
   -Wpedantic
   -Werror
   -DMUSASHI_CNF=\"emu68kconf.h\"
+  "$<$<NOT:$<CONFIG:Debug>>:-O3>"
   "$<$<CONFIG:Debug>:-ggdb;-Og>")
 
 target_link_options(sq68ux PRIVATE ${EM_LINK} ${QLAY3_LINK}
+                    "$<$<NOT:$<CONFIG:Debug>>:-O3>"
   "$<$<CONFIG:Debug>:-ggdb;-Og>")
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -159,6 +161,7 @@ target_compile_options(
   -Wpedantic
   -Werror
   -DMUSASHI_CNF=\"emu68kconf.h\"
+  "$<$<NOT:$<CONFIG:Debug>>:-O3>"
   "$<$<CONFIG:Debug>:-ggdb;-Og>")
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
@@ -167,7 +170,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     --preload-file=${CMAKE_SOURCE_DIR}/sqlay3.ini@/sqlay3.ini
     --preload-file=${CMAKE_SOURCE_DIR}/roms/min1.98a1.bin@/roms/min1.98a1.bin)
 else()
-  target_link_options(sqlay3 PRIVATE "$<$<CONFIG:Debug>:-ggdb;-Og>")
+  target_link_options(sqlay3 PRIVATE
+                     "$<$<NOT:$<CONFIG:Debug>>:-O3>"
+                     "$<$<CONFIG:Debug>:-ggdb;-Og>")
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
