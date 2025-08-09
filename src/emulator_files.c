@@ -82,9 +82,6 @@ bool emulatorLoadFile(const char *name, uint8_t *addr, size_t wantSize)
 	}
 
 	res = read(fd, addr, fileSize);
-	if (res < fileSize) {
-		fprintf(stderr, "Error: Short Read %s %zu\n", name, res);
-	}
 
 	close(fd);
 
