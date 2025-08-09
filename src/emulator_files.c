@@ -60,7 +60,7 @@ bool emulatorLoadFile(const char *name, uint8_t *addr, size_t wantSize)
 {
 	size_t fileSize;
 	int fd;
-	size_t res;
+	ssize_t res;
 
 	if (!emulatorFileExists(name)) {
 		fprintf(stderr, "File Not Found %s\n", name);
@@ -82,6 +82,9 @@ bool emulatorLoadFile(const char *name, uint8_t *addr, size_t wantSize)
 	}
 
 	res = read(fd, addr, fileSize);
+	if (res < 0) {
+		fprintf(stderr, "Error: Read %s %zd\n", name, res);
+	}
 
 	close(fd);
 
